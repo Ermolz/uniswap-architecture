@@ -89,7 +89,24 @@ SHA визначає знімок репозиторію, а не адресу �
 | [V4: Building with Flash Accounting](https://developers.uniswap.org/docs/protocols/v4/guides/flash-accounting) | Знаки дельт і композиція операцій |
 | [V4: Unlock Callback & Deltas](https://developers.uniswap.org/docs/protocols/v4/guides/unlock-callback-and-deltas) | Організація callback, оплата та отримання активів |
 
-## 7. Правила перевірки посилань
+## 7. Джерела поглибленого розбору
+
+[Додаток](06-deep-dive.md) використовує ті самі коміти core, що й основний звіт. Точні суми в числовому сценарії отримано цілою арифметикою Q64.96 зі спрямованим округленням. Значення вибраних tick додатково зіставлено з високоточною десятковою арифметикою; платежі — з незалежними раціональними обчисленнями. Це арифметична перевірка прикладу, а не запуск EVM чи перевірка мережевої транзакції.
+
+| Джерело | Що підтверджує |
+|---|---|
+| [TickMath.sol, L23–L53](https://github.com/Uniswap/v3-core/blob/5ea68a77cb541c6b3812df783be71ba8c081e25f/contracts/libraries/TickMath.sol#L23-L53) | Точні Q64.96 для ticks 0, 60 і 90 |
+| [SqrtPriceMath.sol, L153–L194](https://github.com/Uniswap/v3-core/blob/5ea68a77cb541c6b3812df783be71ba8c081e25f/contracts/libraries/SqrtPriceMath.sol#L153-L194) | Цілочисельні дельти token0/token1 та напрям округлення |
+| [SwapMath.sol, L40–L52](https://github.com/Uniswap/v3-core/blob/5ea68a77cb541c6b3812df783be71ba8c081e25f/contracts/libraries/SwapMath.sol#L40-L52) | Перевірка бюджету й досяжності наступної ціни в exact-input кроці |
+| [SwapMath.sol, L91–L96](https://github.com/Uniswap/v3-core/blob/5ea68a77cb541c6b3812df783be71ba8c081e25f/contracts/libraries/SwapMath.sol#L91-L96) | Комісія кроку та округлення вгору при досягненні цілі |
+| [UniswapV3Pool.sol, L640–L679](https://github.com/Uniswap/v3-core/blob/5ea68a77cb541c6b3812df783be71ba8c081e25f/contracts/UniswapV3Pool.sol#L640-L679) | Зупинка на ліміті ціни та різна семантика залишку в exact input / exact output |
+| [Oracle.sol, L87–L119](https://github.com/Uniswap/v3-core/blob/5ea68a77cb541c6b3812df783be71ba8c081e25f/contracts/libraries/Oracle.sol#L87-L119) | Не більше одного запису на timestamp; розширення кільця та неініціалізовані слоти |
+| [Oracle.sol, L222–L226](https://github.com/Uniswap/v3-core/blob/5ea68a77cb541c6b3812df783be71ba8c081e25f/contracts/libraries/Oracle.sol#L222-L226) | Вибір найстарішого observation та відхилення надто давнього запиту |
+| [Oracle.sol, L253–L285](https://github.com/Uniswap/v3-core/blob/5ea68a77cb541c6b3812df783be71ba8c081e25f/contracts/libraries/Oracle.sol#L253-L285) | Обчислення поточного накопичувача в пам’яті й інтерполяція між записами |
+| [V3 Single Swaps](https://developers.uniswap.org/docs/protocols/v3/guides/swapping/single-hop-swapping) | Невикористані токени на price limit та контекст параметрів router |
+| [Understanding Swaps](https://developers.uniswap.org/docs/get-started/concepts/traders/swaps) | Відмінність перевірок протоколу від обмежень результату для користувача |
+
+## 8. Правила перевірки посилань
 
 1. Посилання на код має вигляд `https://github.com/Uniswap/<repo>/blob/<40-символьний-SHA>/<path>#L<start>-L<end>`.
 2. Файл і діапазон мають існувати саме в цьому коміті; назва функції має відповідати поясненню.
