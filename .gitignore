@@ -1,0 +1,8 @@
+.verification/
+.codex/
+.agents/
+AGENTS.md
+.env
+.env.*
+Thumbs.db
+.DS_Store
